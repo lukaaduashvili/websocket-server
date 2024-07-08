@@ -1,0 +1,1 @@
+Simple Websocket Server implementation in Go
