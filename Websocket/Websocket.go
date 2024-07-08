@@ -8,15 +8,20 @@ import (
 	"net/http"
 )
 
+// Websocket TODO[LA] Handle full duplex communication and persist websockets
 type Websocket struct {
-	conn   net.Conn
-	buffer []byte
+	id         string
+	conn       net.Conn
+	buffer     []byte
+	transcript []Frame
 }
 
-func NewWebsocket(conn net.Conn) *Websocket {
+func NewWebsocket(id string, conn net.Conn) *Websocket {
 	ws := Websocket{
-		conn:   conn,
-		buffer: make([]byte, 1024),
+		id:         id,
+		conn:       conn,
+		buffer:     make([]byte, 1024),
+		transcript: make([]Frame, 32),
 	}
 
 	n, err := ws.conn.Read(ws.buffer)
@@ -59,5 +64,6 @@ func (ws *Websocket) ReceiveMessage() {
 	}
 
 	frame := NewFrame(ws.buffer[:n])
+	ws.transcript = append(ws.transcript, *frame)
 	fmt.Printf("Message received: %s \n", frame.GetDecodedPayload())
 }

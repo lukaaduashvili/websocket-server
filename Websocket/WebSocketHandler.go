@@ -27,7 +27,7 @@ func (h *Handler) HandleTcpConnection(id string, conn net.Conn) {
 		if ok {
 			ws.ReceiveMessage()
 		} else {
-			ws := NewWebsocket(conn)
+			ws := NewWebsocket(id, conn)
 			h.openConnections[id] = *ws
 		}
 	}

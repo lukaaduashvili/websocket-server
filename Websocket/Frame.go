@@ -2,6 +2,7 @@ package Websocket
 
 import "encoding/binary"
 
+// Frame TODO[LA] handle frame processing based on opcodes, Handle split frames
 type Frame struct {
 	IsFragment bool
 	Opcode     OpCode
